@@ -1,23 +1,93 @@
 #include <stdio.h>
-#include <time.h>
-#include <unistd.h>
 #include <stdlib.h>
+#include <time.h>
 #include "heap.h"
 #include "priority_queue.h"
 
-int main(int argc, char *argv[]){
-	time_t start,end;
+int main() {
+    // Initialize heap
+    Heap heap;
+    heap_init(&heap);
 
-	srand(time(NULL));
+    // Initialize priority queue
+    Queue pqueue;
+    pqueue_init(&pqueue);
 
-	time(&start);
+    // Time measurements for priority queue
+    clock_t start, end;
+    double cpu_time_used;
+    srand(time(NULL));
 
-	//sleep for 5-14 seconds. just to demonstrate how the 
-	//time() and rand() works. You don't need sleep() for your lab.
-	sleep((rand() % 10) + 5);
+    // Enqueue 1000 nodes in priority queue
+    start = clock();
+    for (int i = 0; i < 1000; i++) {
+        int priority = rand() % 100;
+        pqueue_enqueue(&pqueue, priority, NULL);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Enqueue 1000 nodes in priority queue: %f seconds\n", cpu_time_used);
 
-	time(&end);
+    // Enqueue 10000 nodes in priority queue
+    start = clock();
+    for (int i = 0; i < 10000; i++) {
+        int priority = rand() % 100;
+        pqueue_enqueue(&pqueue, priority, NULL);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Enqueue 10000 nodes in priority queue: %f seconds\n", cpu_time_used);
 
-	printf("program ran for %.2f seconds\n", difftime(end,start));
+    // Enqueue 100000 nodes in priority queue
+    start = clock();
+    for (int i = 0; i < 100000; i++) {
+        int priority = rand() % 100;
+        pqueue_enqueue(&pqueue, priority, NULL);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Enqueue 100000 nodes in priority queue: %f seconds\n", cpu_time_used);
 
+    // Free memory allocated for priority queue
+    pqueue_destroy(&pqueue);
+
+    // Time measurements for heap
+    srand(time(NULL));
+
+    // Enqueue 1000 nodes in heap
+    start = clock();
+    for (int i = 0; i < 1000; i++) {
+        int priority = rand() % 100;
+        heap_insert(&heap, priority, NULL);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Enqueue 1000 nodes in heap: %f seconds\n", cpu_time_used);
+
+    // Enqueue 10000 nodes in heap
+    start = clock();
+    for (int i = 0; i < 10000; i++) {
+        int priority = rand() % 100;
+        heap_insert(&heap, priority, NULL);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Enqueue 10000 nodes in heap: %f seconds\n", cpu_time_used);
+
+    // Enqueue 100000 nodes in heap
+    start = clock();
+    for (int i = 0; i < 100000; i++) {
+        int priority = rand() % 100;
+        heap_insert(&heap, priority, NULL);
+    }
+    end = clock();
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("Enqueue 100000 nodes in heap: %f seconds\n", cpu_time_used);
+
+    // Free memory allocated for heap
+    heap_destroy(&heap);
+
+	    return 0;
 }
+
+   
